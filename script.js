@@ -22,8 +22,8 @@ const questions = [
         answers:[
             { text:"Kalhari", correct: false },
             { text:"Gobi", correct: false },
-            { text:"Sahara", correct: true },
-            { text:"Antarctica", correct: false },
+            { text:"Sahara", correct: false },
+            { text:"Antarctica", correct: true },
         ]
     },
     {
@@ -78,4 +78,49 @@ function reserState(){
     answerButtons.removeChild(answerButtons.firstChild);
 
 }
+
+function selectAnswer(e){
+    const selectedBtn = e.target;
+    const isCorrect = selectedBtn.dataset.correct === "true";
+    if (isCorrect){
+        selectedBtn.classList.add("correct");
+        score++;
+    } else{
+        selectedBtn.classList.add("incorrect");
+    }
+    Array.from(answerButtons.children).forEach(button =>{
+        if(button.dataset.correct === "true"){
+            button.classList.add("correct");
+        }
+        button.disabled = true;
+    });
+    nextButton.style.display = "block" ;
+}
+
+   function showScore(){
+    reserState();
+    questionElement.innerHTML = `You scored ${score} out of ${questions.length}!`;
+    nextButton.innerHTML = "Play Again";
+    nextButton.style.display = "block";
+   }
+
+   function handleNextButton(){
+    currentQuestionIndex ++;
+    if(currentQuestionIndex < questions.length){
+        showQuestion();
+    }else{
+        showScore();
+    }
+   }
+
+
+
+
+  nextButton.addEventListener("click", ()=>{
+    if(currentQuestionIndex< questions.length){
+        handleNextButton();
+    }else{
+        startQuiz();
+    }
+  })
 startQuiz();
